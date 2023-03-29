@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:async';
 
 import "service_urls.dart";
+import '../utils/comm_utils.dart';
 
 /// 20230327 - 基本解决了异步调用数据加载过慢导致UI加载失败的问题，其原因目前看来是由于多层异步调用
 
@@ -201,9 +202,10 @@ Future<List<Book>> createBookListData() async {
     
     for (var p in jsonData) {
       Book bk = Book();
+      String authorName = generateRandomString(Random().nextInt(10)+1, Random().nextInt(12)+1);
       //print("=============jsonData数据源====================\n$p\n+++++++++++++++++++++++");
       bk.title = p['title'];
-      bk.author = p['userId'].toString();
+      bk.author = "${p['userId'].toString()} $authorName";
       bk.category = p['userId'].toString();
       bk.details = p['body'];
       // 目前用随机的方式从现有图库中取出图书封面图片的全路径名

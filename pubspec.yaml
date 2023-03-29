@@ -30,7 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_screenutil: ^5.7.0
+  carousel_slider: ^4.2.1
+  glassmorphism: ^3.0.0
+  http: ^0.13.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -62,7 +65,106 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
+  assets:
+    - lib/images/book.jpg
+    - lib/images/pop_books/Pop001.jpg
+    - lib/images/pop_books/Pop002.jpg
+    - lib/images/pop_books/Pop003.jpg
+    - lib/images/pop_books/Pop004.jpg
+    - lib/images/pop_books/Pop005.jpg
+    - lib/images/pop_books/Pop006.jpg
+    - lib/images/pop_books/Pop007.jpg
+    - lib/images/pop_books/Pop008.jpg
+    - lib/images/pop_books/Pop009.jpg
+    - lib/images/pop_books/Pop010.jpg
+    - lib/images/pop_books/Pop011.jpg
+    - lib/images/pop_books/Pop012.jpg
+    - lib/images/tech_books/C001.JPG
+    - lib/images/tech_books/Ceph001.jpg
+    - lib/images/tech_books/Compile001.jpg
+    - lib/images/tech_books/Compile002.jpg
+    - lib/images/tech_books/Compile003.jpg
+    - lib/images/tech_books/Computer001.jpg
+    - lib/images/tech_books/Computer002.jpg
+    - lib/images/tech_books/CSS001.JPG
+    - lib/images/tech_books/DataStructure001.jpg
+    - lib/images/tech_books/DataStructure002.jpg
+    - lib/images/tech_books/DB001.JPG
+    - lib/images/tech_books/DB002.JPG
+    - lib/images/tech_books/DB003.JPG
+    - lib/images/tech_books/DB004.JPG
+    - lib/images/tech_books/Game001.jpg
+    - lib/images/tech_books/Go001.jpg
+    - lib/images/tech_books/Go002.jpg
+    - lib/images/tech_books/Go003.jpg
+    - lib/images/tech_books/Go004.jpg
+    - lib/images/tech_books/Go005.jpg
+    - lib/images/tech_books/HTML001.JPG
+    - lib/images/tech_books/Java001.jpg
+    - lib/images/tech_books/Java002.jpg
+    - lib/images/tech_books/Java003.jpg
+    - lib/images/tech_books/Java004.jpg
+    - lib/images/tech_books/Java005.jpg
+    - lib/images/tech_books/Java006.jpg
+    - lib/images/tech_books/Java007.jpg
+    - lib/images/tech_books/JS001.JPG
+    - lib/images/tech_books/js002.jpg
+    - lib/images/tech_books/js003.jpg
+    - lib/images/tech_books/js004.jpg
+    - lib/images/tech_books/Linux001.jpg
+    - lib/images/tech_books/Linux002.jpg
+    - lib/images/tech_books/Linux003.jpg
+    - lib/images/tech_books/Linux004.jpg
+    - lib/images/tech_books/Linux005.jpg
+    - lib/images/tech_books/Linux006.jpg
+    - lib/images/tech_books/Linux007.jpg
+    - lib/images/tech_books/MicroService001.jpg
+    - lib/images/tech_books/MicroService002.jpg
+    - lib/images/tech_books/Network001.jpg
+    - lib/images/tech_books/Network002.jpg
+    - lib/images/tech_books/Programming001.jpg
+    - lib/images/tech_books/Programming002.jpg
+    - lib/images/tech_books/Python001.jpg
+    - lib/images/tech_books/Python002.jpg
+    - lib/images/tech_books/Python003.jpg
+    - lib/images/tech_books/Python004.jpg
+    - lib/images/tech_books/Python005.jpg
+    - lib/images/tech_books/Python006.jpg
+    - lib/images/tech_books/Python007.jpg
+    - lib/images/tech_books/Python008.jpg
+    - lib/images/tech_books/Python009.jpg
+    - lib/images/tech_books/Python010.jpg
+    - lib/images/tech_books/Python011.jpg
+    - lib/images/tech_books/Python012.jpg
+    - lib/images/tech_books/Python013.jpg
+    - lib/images/tech_books/Python014.jpg
+    - lib/images/tech_books/Redis001.jpg
+    - lib/images/tech_books/Redis002.jpg
+    - lib/images/tech_books/System001.jpg
+    - lib/images/tech_books/Virtualization001.jpg
+    - lib/images/tech_books/Virtualization002.jpg
+    - lib/images/tech_books/Virtualization003.jpg
+    - lib/images/tech_books/Virtualization004.jpg
+    - lib/images/tech_books/Virtualization005.jpg
+    - lib/images/tech_books/Web001.jpg
+    - lib/images/tech_books/Web002.jpg
+    - lib/images/tech_books/Web003.jpg
+    - lib/images/tech_books/Web004.jpg
+    - lib/images/tech_books/Web005.jpg
+    - lib/images/tech_books/Web006.jpg
+    - lib/images/tech_books/Web007.jpg
+    - lib/images/celebrity/Bill Gates.webp
+    - lib/images/celebrity/Book Shelf.jpg
+    - lib/images/celebrity/Jeff Bezos.webp
+    - lib/images/celebrity/Larry Ellison.webp
+    - lib/images/celebrity/Mark Zuckerberg.webp
+    - lib/images/celebrity/Michael Bloomberg.webp
+    - lib/images/celebrity/Muhtar Kent.webp
+    - lib/images/celebrity/Oprah Winfrey.webp
+    - lib/images/celebrity/Richard Branson.webp
+    - lib/images/celebrity/Tim Cook.webp
+    - lib/images/celebrity/Warren Buffett.webp
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

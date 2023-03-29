@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../utils/carousel_swiper.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/title_widget.dart';
+
 class IndexPage extends StatelessWidget {
   final String title;
   const IndexPage({required this.title, super.key});
@@ -12,9 +14,27 @@ class IndexPage extends StatelessWidget {
    return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Container(
-        child: CarouselSwiper(),//key: key),
-          
-      ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("lib/images/book.jpg"),
+            fit: BoxFit.cover),
+        ),
+        child: ListView(
+          children: [
+            // 顶部推荐书籍跑马灯
+            TitleWidget(title: "New Books", titleColor: Colors.deepOrange),
+            // CarouselSwiper(), //key: key),],
+            SizedBox(
+              height: 200,
+              child: CarouselSwiperAuto1()
+            ),
+
+            // 热门推荐
+            TitleWidget(title: "Hot", titleColor: Colors.deepOrange),
+
+          ], 
+        ),
+      )
     );
   }
 }
