@@ -5,121 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+
 import '../pages/details_page.dart';
+import './comm_utils.dart';
 
-/// 20230327 - 基本解决
-
-// 为每一本图书做一个毛玻璃效果的卡片式展示（类似名片：左边为封面图片，右边从上至下摆放书名、作者和收藏数）
-class CarouselCard extends StatelessWidget {
-  final Book book;
-  const CarouselCard({required this.book, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GlassmorphicContainer(
-      //毛玻璃效果
-      width: ScreenUtil().setWidth(600),
-      height: ScreenUtil().setHeight(400),
-      borderRadius: 10,
-      blur: 10,
-      alignment: Alignment.topLeft,
-      border: 2,
-      linearGradient: LinearGradient(
-        begin: Alignment.centerLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Color(0xFFffffff).withOpacity(0.1),
-          Color(0xFFFFFFFF).withOpacity(0.05),
-        ],
-        stops: [
-          0.1,
-          1,
-        ],
-      ),
-      borderGradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Color(0xFFffffff).withOpacity(0.5),
-          Color((0xFFFFFFFF)).withOpacity(0.5),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.asset(
-                //书封面图片
-                book.cover,
-                width: ScreenUtil().setWidth(220),
-                height: ScreenUtil().setHeight(300),
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-            SizedBox(
-              width: ScreenUtil().setWidth(300),
-              height: ScreenUtil().setHeight(260),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5.0, top: 18.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      //书名
-                      book.title,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.clip,
-                      ),
-                    ),
-                    Text(
-                      //作者
-                      book.author,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                        overflow: TextOverflow.clip,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
-                        Text(
-                          (Random().nextInt(9999) + 400).toString(),
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+///
 
 /// CarouselSwiperAuto1 util - with small dot indicator below the cards
-/// <-自动->跑马灯推荐块，内嵌的是CarouselCard(毛玻璃效果的card)
+/// <-自动->跑马灯推荐块，内嵌的是GlassmorpicCard(毛玻璃效果的card)
 /// 需要修改的可变参数：
 ///       num - 书的数量
 ///       内嵌card的类型，
 
 class CarouselSwiperAuto1 extends StatefulWidget {
-  //====目前支持的contentType为"carouselCards", "pictures"====
+  //====目前支持的contentType为"GlassmorpicCards", "pictures"====
   final String contentType;
 
   const CarouselSwiperAuto1({required this.contentType, super.key});
@@ -140,10 +39,10 @@ class _CarouselSwiperAuto1State extends State<CarouselSwiperAuto1> {
       details: "This is a book from 1995...",
     ),
   ];
-  List<CarouselCard> carouselCards = []; //跑马灯卡片Widget列表
+  List<GlassmorpicCard> carouselCards = []; //跑马灯卡片Widget列表
   List<String> recPictureNames = []; //推荐图片文件名列表
   List<Image> pictureImages = []; //推荐图片Image Widget列表
-  late List<Widget> widgetList; //widgetList指针，用于在加载跑马灯时，传入该指针来动态选择需展示的列表
+  List<Widget> widgetList = []; //widgetList指针，用于在加载跑马灯时，传入该指针来动态选择需展示的列表
   bool showIndicators = true; // 是否显示跑马灯下面的指示灯Indicators
 
   // 为了能让展示不同的Widget List有不同的展现形式，让不同的Widget List入参给如下几个参数设置不同的值，以达到目的，下面是这几个选项的初始值，
@@ -180,9 +79,9 @@ class _CarouselSwiperAuto1State extends State<CarouselSwiperAuto1> {
         }
         print(recBooks.length);
 
-        //Initialize CarouselCards
+        //Initialize GlassmorpicCards
         for (var b in recBooks) {
-          carouselCards.add(CarouselCard(book: b));
+          carouselCards.add(GlassmorpicCard(book: b));
         }
         // 以下为各个展示列表各自的个性化设置，前面也给出了默认值
         isAutoPlay = true;
@@ -237,11 +136,11 @@ class _CarouselSwiperAuto1State extends State<CarouselSwiperAuto1> {
                 ? carouselCards
                 : pictureImages, //这里为嵌入的展示卡片或者图片的widget列表 20230328 修改为可以支持两种不同类型Widget列表的传入参数，作为展示
             // [
-            //   CarouselCard(book: recBooks[0]),
-            //   CarouselCard(book: recBooks[1]),
-            //   CarouselCard(book: recBooks[2]),
-            //   CarouselCard(book: recBooks[3]),
-            //   CarouselCard(book: recBooks[4]),
+            //   GlassmorpicCard(book: recBooks[0]),
+            //   GlassmorpicCard(book: recBooks[1]),
+            //   GlassmorpicCard(book: recBooks[2]),
+            //   GlassmorpicCard(book: recBooks[3]),
+            //   GlassmorpicCard(book: recBooks[4]),
             // ],
             options: CarouselOptions(
               height: ScreenUtil().setHeight(300.0),
@@ -276,7 +175,7 @@ class _CarouselSwiperAuto1State extends State<CarouselSwiperAuto1> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 // 这里
                 // children: carouselCards.asMap().entries.map(
-                children: widgetList.asMap().entries.map(
+                children: widgetList.isEmpty? []: widgetList.asMap().entries.map(
                   (entry) {
                     return GestureDetector(
                       onTap: () => _controller.animateToPage(entry
@@ -304,7 +203,7 @@ class _CarouselSwiperAuto1State extends State<CarouselSwiperAuto1> {
   }
 }
 
-// 建立一个横向滑动的ListView，用于装载指定数量的CarouselCard,传入参数为Book instance和num
+// 建立一个横向滑动的ListView，用于装载指定数量的GlassmorpicCard,传入参数为Book instance和num
 class CarouselSwiper extends StatefulWidget {
   const CarouselSwiper({super.key});
 
@@ -365,7 +264,7 @@ class _CarouselSwiperState extends State<CarouselSwiper> {
                 ),
               );
             },
-            child: CarouselCard(book: recBooks[index]),
+            child: GlassmorpicCard(book: recBooks[index]),
           );
         },
       ),

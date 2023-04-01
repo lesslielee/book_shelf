@@ -217,14 +217,15 @@ Future<List<Book>> createBookListData() async {
   return bks;
 }
 
-///推荐书目列表，这里仅是在category列表长度范围内随机取出指定num个数字，作为推荐书目的下标
+///推荐书目，图片等列表，这里仅是在category列表长度范围内随机取出指定num个数字，作为推荐书目的下标
 ///返回值为一个Book数组，每个元素为指定书目类别category的Book
-List<Book> recommendBooks({required List<Book> books, int num = 1, String category="all"}) {
+///20230328 - 修改为一个泛型函数，以期接收各种列表数据，为其提供指定数量的推荐子列表
+List<T> recommendList<T>({required List<T> list, int num = 1, String category="all"}) {
   var rand = Random();
-  List<Book> recList = [];
-  int randSeed = books.length;
+  List<T> recList = [];
+  int randSeed = list.length;
   for(int i=0; i<num; i++){
-    recList.add(books[rand.nextInt(randSeed)]);
+    recList.add(list[rand.nextInt(randSeed)]);
   }
   
   return recList;
@@ -245,3 +246,31 @@ List<Book> recommendBooks({required List<Book> books, int num = 1, String catego
   //     randSeed = 1;
   // }
 }
+
+///获取图片列表，暂时的做法是返回一组图片名称列表
+///目前此图片列表用在Biographies，做跑马灯式的横滑展示
+Future<List<String>> createPictureList () async {
+  List<String> pictures = <String>[];
+  // List<Map<dynamic, dynamic>> jsonData = [];
+  // final url = 
+
+  //当前没有后台网站的模拟数据，只好用本地的图片文件名列表来组装一组数据
+  //将来还是需要改成从后台获取数据的方式，所以还是把函数声明为Future类型
+  pictures = [
+    "lib/images/celebrity/Bill Gates.webp",
+    "lib/images/celebrity/Book Shelf.jpg",
+    "lib/images/celebrity/Jeff Bezos.webp",
+    "lib/images/celebrity/Larry Ellison.webp",
+    "lib/images/celebrity/Mark Zuckerberg.webp",
+    "lib/images/celebrity/Michael Bloomberg.webp",
+    "lib/images/celebrity/Muhtar Kent.webp",
+    "lib/images/celebrity/Oprah Winfrey.webp",
+    "lib/images/celebrity/Richard Branson.webp",
+    "lib/images/celebrity/Tim Cook.webp",
+    "lib/images/celebrity/Warren Buffett.webp",
+  ];
+
+  return pictures;
+}
+
+
