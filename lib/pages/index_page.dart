@@ -54,8 +54,8 @@ class _IndexPageState extends State<IndexPage> {
   // 用于上拉加载的图书列表
   // List<Book> pickBooks = [];
 
-  //用于将页面滚动到顶
-  final ScrollController _scrollController = ScrollController();
+  // //用于将页面滚动到顶
+  // final ScrollController _scrollController = ScrollController();
   //指定当前页
   var currPage;
 
@@ -163,17 +163,21 @@ class _IndexPageState extends State<IndexPage> {
       //   },
       // ),
 
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Back to Top',
-        child: const Icon(Icons.vertical_align_top),
-        onPressed: () {
-          print("点击了Back to Top");
-          _scrollController.animateTo(0.0, 
-          duration: Duration(milliseconds: 500), 
-          curve: Curves.elasticInOut);
-        },
+      // floatingActionButton: FloatingActionButton(
+      //   tooltip: 'Back to Top',
+      //   child: const Icon(Icons.vertical_align_top),
+      //   onPressed: () {
+      //     if (_scrollController.hasClients) {
+      //     print("点击了Back to Top");
+      //     _scrollController.animateTo(0.0, 
+      //     duration: Duration(milliseconds: 500), 
+      //     curve: Curves.elasticInOut);}
+      //     else {
+      //       print("YYYYYYYYYYYYYYYYYYYY");
+      //     }
+      //   },
 
-      ),
+      // ),
 
       bottomNavigationBar: 
       // StyleProvider(
@@ -182,7 +186,7 @@ class _IndexPageState extends State<IndexPage> {
         ConvexAppBar(
           style: TabStyle.textIn,
           // backgroundColor: ThemeData().canvasColor,
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.blueAccent,
           initialActiveIndex: currIndex,
           items: btmNavBarItms,
           onTap: (index) {

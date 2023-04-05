@@ -31,7 +31,7 @@ class BookShelf extends StatelessWidget {
             // debugShowCheckedModeBanner: false,
             title: "Book Shelf",
             theme: ThemeData(
-              primarySwatch: Colors.deepOrange,
+              primarySwatch: Colors.blue,
               textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
             ),
             home: child,

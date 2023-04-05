@@ -1,4 +1,5 @@
 import "dart:convert";
+import 'package:book_shelf/main.dart';
 import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 import 'package:http/retry.dart';
@@ -8,6 +9,7 @@ import 'dart:async';
 
 import "service_urls.dart";
 import '../utils/comm_utils.dart';
+import '../pages/home_page.dart';
 
 /// 20230327 - 基本解决了异步调用数据加载过慢导致UI加载失败的问题，其原因目前看来是由于多层异步调用
 
@@ -247,7 +249,7 @@ List<T> recommendList<T>({required List<T> list, int num = 1, String category="a
   // }
 }
 
-///获取图片列表，暂时的做法是返回一组图片名称列表
+///获取图片列表，暂时的做法是返回一组“图片”名称列表
 ///目前此图片列表用在Biographies，做跑马灯式的横滑展示
 Future<List<String>> createPictureList () async {
   List<String> pictures = <String>[];
@@ -274,3 +276,88 @@ Future<List<String>> createPictureList () async {
 }
 
 
+
+/// 用于调用异步函数createBookListData()来获取后台图书数据，然后调用recommendList()方法取出指定数量的书，
+/// 并返回Future<List<Book>>
+/// 此方法的目的：  是为了在上拉持续加载数据时，能够将数据获取抽象出来与页面UI的界面及业务实现分离。 
+/// 难点：          (A) 因为数据需要从后台网站异步获取，所以将此类获取数据的函数定义为异步函数，返回值亦是Future类型，那么在UI定义中，如何调用这些数据异步获取函数
+///                 用await还是then很关键，这个也是困扰了我很久，调试了很久的问题。
+///                 1. 往往需要在initState()中异步调用这个数据获取函数，但initState()方法在<State>状态类的定义中，又不能是异步函数，也不允许出现async或者await关键字，所以只能用then()
+///                   来实现异步调用
+///                 2. 在某些界面刷新/更新操作的onPressed, onTap, onLoad, onRefresh这类操作的回调函数中添加setState()调用，于是可以在setState()中将这个数据获取函数作为回调函数来用，
+///                   这种情况下，一般await和then都是可以用的（取决于调用函数的返回值类型），需要根据具体情况来决定到底选择await还是then，一般可能也需要选择then
+///                 (B) 此函数方法内部的异步方式选择，尽量用await来实现，否则如果选择then的话，在函数返回时，异步操作可能没有返回数据，则导致返回空值。
+/// 输入参数：      无
+/// 返回值类型：    Future<List<Book>>
+/// 返回值：        tmpBooks
+Future<List<Book>> fetchNewgoods() async {
+  List<Book> tmpBooks = [];
+  print("被上拉动作触发加载新数据");
+
+  // var formPage = {'page': page};
+  List<Book> bs;
+  bs = await createBookListData(); 
+    
+    try {
+      print("=====图书数量====: ${bs.length}");
+      // 调用reccomendBooks方法，从图书列表中取出6本书作为新加载的书
+      tmpBooks = recommendList(list: bs, num: 6);
+      // setState(() {
+        //为了做出上拉继续加载的效果，这里没有一次性加载所有的图书
+
+        tmpBooks = renameBookName(tmpBooks);
+        // pickBooks.addAll(tmpBooks);
+        
+        
+        // page++;
+        // print("####PAGE####: $page");
+      // });
+
+    //   for (var b in pickBooks) {
+    //     print('书名：${b.title}, 封面图片：${b.cover}');
+    //   }
+    //   print("===========更新后的picBooks有${pickBooks.length}本书===============");
+    } catch (e) {
+      print("====>生成推荐图书失败！<=====");
+      throw ("推荐图书失败: Error $e");
+    }
+    // print(pickBooks.length);
+    //_PullUpListWraperState();
+
+    // final pullUpWraperKey = GlobalKey<_PullUpListWraperState>();
+
+    // _PullUpListWraperState? state = pullUpWraperKey.currentState;
+    // print("来到setState()之前了...");
+    // if (state != null) {
+    //   _PullUpListWraperState()._getNewGoods();
+    // state.setState(() {
+    //   print("<<<<从外部调用了 setState() ${pickBooks.length}>>>>");
+    // });
+    // } else {
+    //   print("state 现在还是null");
+    // }
+
+    // notifyListeners();
+  for(Book p in tmpBooks) {
+    print("${p.title}, ${p.cover}");
+  }
+
+  print('return之前打印第0本书：${tmpBooks.length}, ${tmpBooks[0].cover}');
+  return tmpBooks;  
+}
+
+// 为获取到的图书列表pickBooks里的图书title改名，在每隔title前加上"number_"
+// ！！！此函数“没什么实用价值”！！！，主要是因为现在用的假数据，title是一串乱乱的字符，不方便统计和查看已经在UI上加载和展示了多少数据
+// 所以用这个函数将书名改一下，以便在界面上查看数据量
+List<Book> renameBookName(List<Book> nBooks) {
+  //numOfPullUpBooks这个变量是！！！在整个App中全局可见的变量。！！！
+  //是临时用来为随机书改名字用的，用于在前面添加一个持续增长的数字。
+  int n = numOfPullUpBooks; //pickBooks.length;
+  for (int i = 0; i < nBooks.length; i++) {
+    if (!nBooks[i].title.contains('_')) {
+      nBooks[i].title = "${n+i}_${nBooks[i].title}";
+      numOfPullUpBooks++;
+    }
+  }
+  return nBooks;
+}

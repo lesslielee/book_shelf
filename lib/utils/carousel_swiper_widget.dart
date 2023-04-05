@@ -63,7 +63,7 @@ class _CarouselSwiperAuto1State extends State<CarouselSwiperAuto1> {
       //要展示的内容为carouselCard，即前面carourselCard类创建的毛玻璃卡片式的图书展示方式
       createBookListData().then((bks) {
         try {
-          print("=====图书数量====: ${bks.length}");
+          print("=====initState图书数量====: ${bks.length}");
           setState(
             () {
               // 调用reccomendBooks方法，从图书列表中取出5本书作为推荐图书
@@ -93,7 +93,7 @@ class _CarouselSwiperAuto1State extends State<CarouselSwiperAuto1> {
       //要展示的内容为pictures，即要展示一些图片列表
       createPictureList().then((pictures) {
         try {
-          print("====图片数量====: ${pictures.length}");
+          print("====initState图片数量====: ${pictures.length}");
           setState(() {
             recPictureNames = recommendList(list: pictures, num: 6);
 
