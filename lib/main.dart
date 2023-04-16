@@ -5,10 +5,16 @@ import 'package:provider/provider.dart';
 import 'pages/index_page.dart';
 import 'utils/pull_up_list_wraper_widget.dart';
 
-void main() async {
-  await ScreenUtil.ensureScreenSize();
+// void main() async {
+//   await ScreenUtil.ensureScreenSize();
+//   runApp(BookShelf());
+// }
+
+void main()  {
+  // await ScreenUtil.ensureScreenSize();
   runApp(BookShelf());
 }
+
 
 class BookShelf extends StatelessWidget {
   const BookShelf({super.key});

@@ -20,10 +20,12 @@ class HomePage extends StatefulWidget {
 
 int numOfPullUpBooks = 0;
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin { //页面状态保持的3个条件之一，mixin AutomaticKeepAliveClientMixin
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
+  //页面状态保持的3个条件之一，mixin AutomaticKeepAliveClientMixin
 
   late String _title;
-  
+
   // 这个变量是用于存放上拉持续加载的图书列表对应的数据，定义在这里也是经过多番尝试才定下来的，
   // 在这里定义，虽然没有让数据与UI完全抽离，但是已经可以做到，仅仅用这个变量来接收数据加载程序的返回值，和将该变量作为初值传递给上拉加载Widget,
   // 而无需在这里加载后台数据来赋给这个变量———将加载后台数据的函数抽象出去成为一个独立的函数fetchNewgoods()，放在data_sources.dart中，可作为公共函数来调用。
@@ -51,13 +53,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
   //用于将页面滚动到顶
   final ScrollController _scrollController = ScrollController();
-  
+
   // 页面状态保持还需要如下这两条，(3个条件的另外两条)
   // 1. override wantKeepAlive这个方法的返回值为true
   // 2. 声明一个GlobalKey<RefreshIndicatorState>的实例
   @override
   bool get wantKeepAlive => true;
-  GlobalKey<RefreshIndicatorState> _easyRefreshKey = GlobalKey<RefreshIndicatorState>();
+  GlobalKey<RefreshIndicatorState> _easyRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -77,87 +80,92 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
       //   ),
       // ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("lib/images/book.jpg"), fit: BoxFit.cover),
+            image: AssetImage("lib/images/next_door.jpg"),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.8),
+            BlendMode.dstATop,   ),         
+          ),
         ),
+
         //height: MediaQuery.of(context).size.height - 500,
         child: //SizedBox(
-          //child: 
-          EasyRefresh(
-            key: _easyRefreshKey,
-            // header: MaterialHeader(),
-            // footer: MaterialFooter(
-            header: BezierHeader(),
-            footer: BezierFooter(
-                // key: pullUpWraperKey,
-                // backgroundColor: Colors.pink,
-                // textStyle: TextStyle(
-                //   color: Colors.deepOrange,
-                //   fontSize: 15,
-                // ),
-                // showMessage: true,
-                // noMoreText: '',
-                //  dragText: '加载更多...',
-                ),
-            child: ListView(
-              controller: _scrollController,
-              scrollDirection: Axis.vertical,
-              children: [
-                // 顶部推荐书籍跑马灯
-                TitleWidget(title: "New Books", titleColor: Colors.deepOrange),
-                SizedBox(
-                  height: ScreenUtil().setHeight(300),
-                  child: CarouselSwiperAuto1(contentType: "carouselCards"),
-                ),
+            //child:
+            EasyRefresh(
+          key: _easyRefreshKey,
+          // header: MaterialHeader(),
+          // footer: MaterialFooter(
+          header: BezierHeader(),
+          footer: BezierFooter(
+              // key: pullUpWraperKey,
+              // backgroundColor: Colors.pink,
+              // textStyle: TextStyle(
+              //   color: Colors.deepOrange,
+              //   fontSize: 15,
+              // ),
+              // showMessage: true,
+              // noMoreText: '',
+              //  dragText: '加载更多...',
+              ),
+          child: ListView(
+            controller: _scrollController,
+            scrollDirection: Axis.vertical,
+            children: [
+              // 顶部推荐书籍跑马灯
+              TitleWidget(title: "New Books", titleColor: Colors.deepOrange),
+              SizedBox(
+                height: ScreenUtil().setHeight(300),
+                child: CarouselSwiperAuto1(contentType: "carouselCards"),
+              ),
 
-                // 热门推荐或名人推介
-                TitleWidget(
-                    title: "Biographies", titleColor: Colors.deepOrange),
-                SizedBox(
-                  height: ScreenUtil().setHeight(300),
-                  child: CarouselSwiperAuto1(contentType: "pictures"),
-                ),
+              // 热门推荐或名人推介
+              TitleWidget(title: "Biographies", titleColor: Colors.deepOrange),
+              SizedBox(
+                height: ScreenUtil().setHeight(300),
+                child: CarouselSwiperAuto1(contentType: "pictures"),
+              ),
 
-                // 推介书籍列表，竖划
-                TitleWidget(
-                    title: "Picks for you", titleColor: Colors.deepOrange),
-                // Consumer<EasyRefresh>(builder: (context, csmr, child) => PullUpListWraper(contentType: "books")),
-                PullUpListWraper(
-                  contentType: "books",
-                  // 这里的参数picForYouBooks只能是采用定义在这个_HomPageState()类中了，然后在上拉加载的操作时，onLoad()回调函数中通过回调setState()来操作这个数据，并因此（setSate)
-                  // 引发Widget树的相应buid()方法来重绘，没办法到PullUpListWraper的相同instance中去setState()。
-                  pickBooks: pickForYouBooks,
-                ),
-              ],
-            ),
-            onLoad: () {
-              print("开始onLoad...");
-              setState(
-                () {
-                  // 关于pickForYouBooks的说明，见前面几行的注释。
-                  // 此处即是利用onLoad()事件回调函数来调用setState()方法，进而在此处调用fetchNewGoods()这个抽象的数据获取函数。
-                  // ！！注意：这里then()中的变量bs，不需要显式声明，它是fetchNewGoods()的返回值
-                  fetchNewgoods().then(
-                    (bs) {
-                      pickForYouBooks.addAll(bs);
-                      for (var b in pickForYouBooks) {
-                        print('书名：${b.title}, 封面图片：${b.cover}');
-                      }
-                      print(
-                          "===========更新后的picBooks有${pickForYouBooks.length}本书===============");
-                    },
-                  );
-                },
-              );
-              //PullUpListWraper().
-              // GetNewGoods().fetchNewgoods();
-            },
-            onRefresh: () {
-              print("开始onRefresh...");
-            },
+              // 推介书籍列表，竖划
+              TitleWidget(
+                  title: "Picks for you", titleColor: Colors.deepOrange),
+              // Consumer<EasyRefresh>(builder: (context, csmr, child) => PullUpListWraper(contentType: "books")),
+              PullUpListWraper(
+                contentType: "books",
+                // 这里的参数picForYouBooks只能是采用定义在这个_HomPageState()类中了，然后在上拉加载的操作时，onLoad()回调函数中通过回调setState()来操作这个数据，并因此（setSate)
+                // 引发Widget树的相应buid()方法来重绘，没办法到PullUpListWraper的相同instance中去setState()。
+                pickBooks: pickForYouBooks,
+              ),
+            ],
           ),
-       // ),
+          onLoad: () {
+            print("开始onLoad...");
+            setState(
+              () {
+                // 关于pickForYouBooks的说明，见前面几行的注释。
+                // 此处即是利用onLoad()事件回调函数来调用setState()方法，进而在此处调用fetchNewGoods()这个抽象的数据获取函数。
+                // ！！注意：这里then()中的变量bs，不需要显式声明，它是fetchNewGoods()的返回值
+                fetchNewgoods().then(
+                  (bs) {
+                    pickForYouBooks.addAll(bs);
+                    for (var b in pickForYouBooks) {
+                      print('书名：${b.title}, 封面图片：${b.cover}');
+                    }
+                    print(
+                        "===========更新后的picBooks有${pickForYouBooks.length}本书===============");
+                  },
+                );
+              },
+            );
+            //PullUpListWraper().
+            // GetNewGoods().fetchNewgoods();
+          },
+          onRefresh: () {
+            print("开始onRefresh...");
+          },
+        ),
+        // ),
       ),
 
       // bottomNavigationBar: // ConvexAppBar(
@@ -184,7 +192,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         onPressed: () {
           print("点击了Back to Top");
           try {
-             if (_scrollController.hasClients) {
+            if (_scrollController.hasClients) {
               print("我要回到Top啦!");
               _scrollController.animateTo(0.0,
                   duration: const Duration(milliseconds: 500),
@@ -195,7 +203,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
             // }
           } catch (e) {
             print("回不去Top T-T $e");
-            throw("回不去Top T-T $e");
+            throw ("回不去Top T-T $e");
           }
         },
       ),

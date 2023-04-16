@@ -19,7 +19,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0-277.0.dev <4.0.0'
+  # sdk: '>=3.0.0-277.0.dev <4.0.0'
+  sdk: '>=2.19.6 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -69,6 +70,8 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+    - lib/images/person.png
+    - lib/images/next_door.jpg
     - lib/images/book.jpg
     - lib/images/pop_books/Pop001.jpg
     - lib/images/pop_books/Pop002.jpg

@@ -260,7 +260,7 @@ class _CarouselSwiperState extends State<CarouselSwiper> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailsView(bk: bk),
+                  builder: (context) => BookDetails(book: bk),
                 ),
               );
             },

@@ -28,10 +28,7 @@ class _IndexPageState extends State<IndexPage> {
   int currIndex = 0;
 
   final List<TabItem> btmNavBarItms = [
-    TabItem(
-      icon: Icon(Icons.home),
-      title: "Home",
-    ),
+    TabItem(icon: Icon(Icons.home), title: "Home"),
     TabItem(icon: Icon(Icons.recommend), title: "Hot"),
     TabItem(icon: Icon(Icons.search), title: "Search"),
     TabItem(icon: Icon(Icons.man), title: "Me")
@@ -186,7 +183,7 @@ class _IndexPageState extends State<IndexPage> {
         ConvexAppBar(
           style: TabStyle.textIn,
           // backgroundColor: ThemeData().canvasColor,
-          backgroundColor: Colors.blueAccent,
+          // backgroundColor: Colors.blueAccent,
           initialActiveIndex: currIndex,
           items: btmNavBarItms,
           onTap: (index) {
